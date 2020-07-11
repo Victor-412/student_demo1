@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.victor.mapper.StudentMapper">
+
+
+    <resultMap id="studentDTOMap" type="com.victor.dto.studentDTO">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="student_name" jdbcType="VARCHAR" property="studentName"/>
+        <result column="num" jdbcType="VARCHAR" property="num"/>
+        <result column="gender" jdbcType="INTEGER" property="gender"/>
+        <result column="department_name" jdbcType="VARCHAR" property="departmentName"/>
+        <result column="major" jdbcType="DATE" property="major"/>
+    </resultMap>
+
+    <select id="selectAllStudentDTO" resultMap="studentDTOMap">
+        select s.id, s.student_name, s.num, s.gender, d.department_name, s.major from student_demo.student s,student_demo.department d
+        where s.department_id = d.id order by s.id
+    </select>
+
+    <select id="selectById" resultType="com.victor.pojo.Student">
+        select * from student_demo.student where id = #{id}
+    </select>
+
+    <insert id="addStudent" parameterType="com.victor.pojo.Student">
+        insert into student_demo.student (id, student_name, num, gender, department_id, major)
+        values (#{id},#{studentName},#{num},#{gender},#{departmentId},#{major})
+    </insert>
+
+    <update id="updateStudent" parameterType="com.victor.pojo.Student">
+        update student_demo.student
+        set student_name = #{studentName},num = #{num},gender = #{gender},department_id = #{departmentId},
+         major = #{major}
+        where id = #{id}
+    </update>
+    
+    <delete id="deleteStudent" parameterType="int">
+        delete from student_demo.student where id = #{id}
+    </delete>
+
+</mapper>

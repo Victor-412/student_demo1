@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.victor.mapper.StuCourseMapper">
+
+    <resultMap id="stuCourseDTOMap" type="com.victor.dto.stuCourseDTO">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="num" jdbcType="VARCHAR" property="num"/>
+        <result column="student_name" jdbcType="VARCHAR" property="studentName"/>
+        <result column="course_name" jdbcType="VARCHAR" property="courseName"/>
+        <result column="credit" jdbcType="INTEGER" property="credit"/>
+        <result column="teacher" jdbcType="VARCHAR" property="teacher"/>
+        <result column="score" jdbcType="FLOAT" property="score"/>
+    </resultMap>
+
+    <select id="selectAllStuCourseDTO" resultMap="stuCourseDTOMap">
+        select sc.id,s.num,s.student_name,co.course_name, credit, teacher,sc.score
+        from student_demo.stucourse sc,student_demo.student s,student_demo.course co
+        where sc.stu_num = s.num and sc.course_id = co.course_id
+    </select>
+
+    <select id="searchByNum" resultMap="stuCourseDTOMap">
+        select sc.id,s.num,s.student_name,co.course_name, credit, teacher,sc.score
+        from student_demo.stucourse sc,student_demo.student s,student_demo.course co
+        where sc.stu_num = s.num and sc.course_id = co.course_id and sc.stu_num = #{num}
+    </select>
+
+</mapper>

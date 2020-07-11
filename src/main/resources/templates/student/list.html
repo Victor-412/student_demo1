@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<!-- saved from url=(0052)http://getbootstrap.com/docs/4.0/examples/dashboard/ -->
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Dashboard Template for Bootstrap</title>
+    <!-- Bootstrap core CSS -->
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link th:href="@{/css/dashboard.css}" rel="stylesheet">
+    <style type="text/css">
+
+        @-webkit-keyframes chartjs-render-animation {
+            from {
+                opacity: 0.99
+            }
+            to {
+                opacity: 1
+            }
+        }
+
+        @keyframes chartjs-render-animation {
+            from {
+                opacity: 0.99
+            }
+            to {
+                opacity: 1
+            }
+        }
+
+        .chartjs-render-monitor {
+            -webkit-animation: chartjs-render-animation 0.001s;
+            animation: chartjs-render-animation 0.001s;
+        }
+    </style>
+</head>
+
+<body>
+<div th:replace="~{common/commons::topbar}"></div>
+
+<div class="container-fluid">
+    <div class="row">
+        <div th:replace="~{common/commons::sidebar(active='list.html')}"></div>
+
+        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
+            <h2>学生管理</h2>
+            <!--添加学生按钮-->
+            <a class="btn btn-sm btn-primary" th:href="@{/toAdd}">添加</a>
+
+            <div class="table-responsive">
+                <table class="table table-striped table-sm">
+                    <thead>
+                    <tr>
+                        <th>序号</th>
+                        <!--<th>id</th>-->
+                        <th>姓名</th>
+                        <th>学号</th>
+                        <th>性别</th>
+                        <th>院系</th>
+                        <th>专业</th>
+                        <th>操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="stu:${stus}">
+                        <!--<td th:text="${stu.getId()}"></td>-->
+                        <td th:text="${stuStat.count}"></td>
+                        <td th:text="${stu.getStudentName()}"></td>
+                        <td th:text="${stu.getNum()}"></td>
+                        <td th:text="${stu.getGender() == 0 ? '女':'男'}"></td>
+                        <td th:text="${stu.getDepartmentName()}"></td>
+                        <td th:text="${stu.getMajor()}"></td>
+
+                        <td >
+                            <a class="btn btn-sm btn-primary" th:href="@{/student/}+${stu.id}">编辑</a>
+                            <a class="btn btn-sm btn-danger" th:href="@{/delStu/}+${stu.id}">删除</a>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                <!--显示分页信息部分代码-->
+                <!--<div class="modal-footer no-margin-top">
+                    <div class="col-md-6">
+                        <strong>当前第 [[${pageInfo.pageNum}]]页,共 [[${pageInfo.pages}]] 页.一共 [[${pageInfo.total}]] 条记录
+                        </strong>
+                    </div>
+                    <ul class="pagination pull-right no-margin">
+                        <li th:if="${pageInfo.hasPreviousPage}">
+                            <a th:href="'/student?pageNum=1'">首页</a>
+                        </li>
+                        <li class="prev" th:if="${pageInfo.hasPreviousPage}">
+                            <a th:href="'/student?pageNum='+${pageInfo.prePage}">
+                                <i class="ace-icon fa fa-angle-double-left"></i>
+                            </a>
+                        </li>
+                        &lt;!&ndash;遍历条数&ndash;&gt;
+                        <li th:each="nav:${pageInfo.navigatepageNums}">
+                            <a th:href="'/student?pageNum='+${nav}" th:text="${nav}" th:if="${nav != pageInfo.pageNum}"></a>
+                            <span style="font-weight: bold;background: #6faed9;" th:if="${nav == pageInfo.pageNum}" th:text="${nav}" ></span>
+                        </li>
+                        <li class="next" th:if="${pageInfo.hasNextPage}">
+                            <a th:href="'/student?pageNum='+${pageInfo.nextPage}">
+                                <i class="ace-icon fa fa-angle-double-right"></i>
+                            </a>
+                        </li>
+                        <li>
+                            <a th:href="'/student?pageNum='+${pageInfo.pages}">尾页</a>
+                        </li>
+                    </ul>
+                </div>-->
+            </div>
+            <div class="modal-footer no-margin-top">
+                <div class="col-md-6">
+                    当前第 [[${pageInfo.pageNum}]]页,共 [[${pageInfo.pages}]] 页.一共 [[${pageInfo.total}]] 条记录
+                </div>
+
+                <ul class="pagination pull-right">
+                    <li th:if="${pageInfo.hasPreviousPage}">
+                        <a class="btn btn-sm btn-primary" th:href="'/student?pageNum=1'">首页</a>
+                    </li>
+
+                    <li class="prev" th:if="${pageInfo.hasPreviousPage}">
+                        <a th:href="'/student?pageNum='+${pageInfo.prePage}">
+                            <a class="btn btn-sm btn-primary" th:href="'/student?pageNum='+${pageInfo.prePage}">上一页</a>
+                        </a>
+                    </li>
+                    <!--遍历条数-->
+                    <li th:each="nav:${pageInfo.navigatepageNums}">
+                        <a class="btn btn-sm btn-primary" th:href="'/student?pageNum='+${nav}" th:text="${nav}" th:if="${nav != pageInfo.pageNum}"></a>
+                        <span class="btn btn-sm btn-primary" style="font-weight: bold;background: #6faed9;" th:if="${nav == pageInfo.pageNum}" th:text="${nav}" ></span>
+                    </li>
+
+                    <li class="next" th:if="${pageInfo.hasNextPage}">
+                        <a th:href="'/student?pageNum='+${pageInfo.nextPage}">
+                            <a class="btn btn-sm btn-primary" th:href="'/student?pageNum='+${pageInfo.nextPage}">下一页</a>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a class="btn btn-sm btn-primary" th:href="'/student?pageNum='+${pageInfo.pages}">尾页</a>
+                    </li>
+                </ul>
+            </div>
+        </main>
+    </div>
+</div>
+<!-- Bootstrap core JavaScript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script type="text/javascript" th:src="@{/js/jquery-3.2.1.slim.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/popper.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/bootstrap.min.js}"></script>
+
+</body>
+</html>

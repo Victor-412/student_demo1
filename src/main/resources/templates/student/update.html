@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<!-- saved from url=(0052)http://getbootstrap.com/docs/4.0/examples/dashboard/ -->
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Dashboard Template for Bootstrap</title>
+    <!-- Bootstrap core CSS -->
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link th:href="@{/css/dashboard.css}" rel="stylesheet">
+    <style type="text/css">
+        /* Chart.js */
+
+        @-webkit-keyframes chartjs-render-animation {
+            from {
+                opacity: 0.99
+            }
+            to {
+                opacity: 1
+            }
+        }
+
+        @keyframes chartjs-render-animation {
+            from {
+                opacity: 0.99
+            }
+            to {
+                opacity: 1
+            }
+        }
+
+        .chartjs-render-monitor {
+            -webkit-animation: chartjs-render-animation 0.001s;
+            animation: chartjs-render-animation 0.001s;
+        }
+    </style>
+</head>
+
+<body>
+<div th:replace="~{common/commons::topbar}"></div>
+
+<div class="container-fluid">
+    <div class="row">
+        <div th:replace="~{common/commons::sidebar(active='list.html')}"></div>
+
+        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
+            <h2>修改学生信息</h2>
+            <form th:action="@{/update}" method="post" >
+                <input name="id" type="hidden" class="form-control" th:value="${stu.id}">
+                <div class="form-group">
+                    <label>姓名</label>
+                    <input name="studentName" type="text" class="form-control " th:value="${stu.studentName}" >
+                </div>
+                <div class="form-group">
+                    <label>学号</label>
+                    <input name="num" type="text" class="form-control" th:value="${stu.num}">
+                </div>
+                <div class="form-group">
+                    <label>性别</label><br/>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="gender" value="1"
+                               th:checked="${stu.gender==1}">
+                        <label class="form-check-label">男</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="gender" value="0"
+                               th:checked="${stu.gender==0}">
+                        <label class="form-check-label">女</label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="departmentId">院系</label>
+                    <!--提交的是部门的ID-->
+                    <div class="select">
+                        <select class="form-control" name="departmentId" id="departmentId">
+                            <option>请选择</option>
+                            <option value="1">信息学院</option>
+                            <option value="2">数信学院</option>
+                            <option value="3">经济学院</option>
+                            <option value="4">法学院</option>
+                            <option value="5">马克思学院</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="select">
+                    <label>专业</label>
+                    <select class="form-control" name="major" id="major">
+                        <option value="">请选择</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary">修改</button>
+            </form>
+        </main>
+    </div>
+</div>
+
+<!-- Bootstrap core JavaScript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script type="text/javascript" th:src="@{/js/jquery-3.2.1.slim.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/popper.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/bootstrap.min.js}"></script>
+<script>
+    //选择第一志愿组织时进行联动
+    var selectFirst = document.getElementById("departmentId");
+    selectFirst.onchange=function(){
+        var selvalue = selectFirst.value;
+        var val = document.getElementById("major");
+        selectMajor(selvalue,val);
+    };
+    var selectMajor = function(selvalue,val){
+        switch (selvalue) {
+            case "": val.innerHTML='<option>请选择</option>';break;
+            case "1": val.innerHTML='<option>计算机技术</option><option >软件工程</option><option>信息安全</option><option>网络信息</option>';break;
+            case "2": val.innerHTML='<option>数学</option><option ></option><option>数学与信息科学</option><option>应用数学</option>';break;
+            case "3": val.innerHTML='<option>经济学专业</option><option>金融专业</option>';break;
+            case "4": val.innerHTML='<option>法律</option><option >商务法律</option><option>助贷部</option><option>外联部</option>';break;
+            case "5": val.innerHTML='<option>马克思</option><option >思政</option><option>马原</option>';break;
+        }
+    };
+</script>
+</body>
+</html>
